@@ -9,30 +9,36 @@
 #include <ctime>
 using namespace std;
 
-const int n = 30; // horizontal size of the map
-const int m = 30; // vertical size size of the map
-static int map[n][m];
-static int closed_nodes_map[n][m]; // map of closed (tried-out) nodes
-static int open_nodes_map[n][m]; // map of open (not-yet-tried) nodes
-static int dir_map[n][m]; // map of directions
-const int dir = 8; // number of possible directions to go at any position
+const int n = 30; // 맵의 가로사이즈
+const int m = 30; // 맵의 세로사이즈
+static int map[n][m];		// 맵의 정의
+static int closed_nodes_map[n][m]; // CloseList 맵의 정의
+static int open_nodes_map[n][m]; // OpenList맵의 정의
+static int dir_map[n][m]; // 방향 맵의 정의
+const int dir = 8; // 갈수있는 8가지방향
 
+
+// 현재 index에서 이 값을 더하면 해당위치로 간다.
 static int dx[dir] = { 1, 1, 0, -1, -1, -1, 0, 1 };
 static int dy[dir] = { 0, 1, 1, 1, 0, -1, -1, -1 };
+
 
 class node
 {
 	int xPos;
 	int yPos;
-	// total distance already travelled to reach the node
+	// 이 노드까지간 총 거리
 	int level;
-	// priority=level+remaining distance estimate
-	int priority;  // smaller: higher priority
+	// 우선순위 = level + 휴리스틱 남은 거리
+	int priority;  
 
 public:
 	node(int xp, int yp, int d, int p)
 	{
-		xPos = xp; yPos = yp; level = d; priority = p;
+		xPos = xp; 
+		yPos = yp; 
+		level = d; 
+		priority = p;
 	}
 
 	int getxPos() const { return xPos; }
@@ -40,18 +46,19 @@ public:
 	int getLevel() const { return level; }
 	int getPriority() const { return priority; }
 
+
 	void updatePriority(const int & xDest, const int & yDest)
 	{
-		priority = level + estimate(xDest, yDest) * 10; //A*
+		priority = level + estimate(xDest, yDest) * 10; // estimate 휴리스틱적 목적지까지 남은 거리
 	}
 
-	// give better priority to going strait instead of diagonally
+	// 대각선으로 이동하는데에 우선순위 부여
 	void nextLevel(const int & i) // i: direction
 	{
 		level += (dir == 8 ? (i % 2 == 0 ? 10 : 14) : 10);
 	}
 
-	// Estimation function for the remaining distance to the goal.
+	// 휴리스틱적으로 목적지 까지 남은 거리
 	const int & estimate(const int & xDest, const int & yDest) const
 	{
 		static int xd, yd, d;
