@@ -272,6 +272,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			newPoint->m_iXpos = Xpos / TILE_WIDTH;
 			newPoint->m_iYpos = Ypos / TILE_HEIGHT;
 
+			if (newPoint->m_iXpos < 0 || newPoint->m_iXpos >= TILE_WIDTH * MAP_HEIGHT)
+				return DefWindowProc(hWnd, message, wParam, lParam);
+
+			if (newPoint->m_iYpos < 0 || newPoint->m_iYpos >= TILE_HEIGHT * MAP_WIDTH)
+				return DefWindowProc(hWnd, message, wParam, lParam);
+
 			list<st_Node *>::iterator iter;
 			for (iter = BlockList.begin(); iter != BlockList.end(); iter++)
 			{

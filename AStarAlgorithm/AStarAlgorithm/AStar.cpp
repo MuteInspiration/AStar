@@ -41,8 +41,9 @@ bool PathFind(int startX, int startY, int endX, int endY)
 		// 오픈리스트에서 F가 가장 작은 노드를 뽑느다.
 		OpenList.sort(compNode);
 		st_Node *pNode = (*OpenList.begin());
-		if (pNode == nullptr)
+		if (OpenList.size() == 0)
 			return true;
+
 		OpenList.erase(OpenList.begin());
 		CloseList.push_back(pNode);
 		//	이 노드가 목적지라면?
@@ -85,10 +86,10 @@ void AxisEightAddNode(st_Node *pParent)
 
 bool TileCheck(int Xpos, int Ypos)
 {
-	if (Xpos < 0 || Xpos > TILE_WIDTH * MAP_WIDTH)
+	if (Xpos < 0 || Xpos >= TILE_WIDTH * MAP_HEIGHT)
 		return false;
 
-	if (Ypos < 0 || Ypos > TILE_HEIGHT * MAP_HEIGHT)
+	if (Ypos < 0 || Ypos >= TILE_HEIGHT * MAP_WIDTH)
 		return false;
 
 
