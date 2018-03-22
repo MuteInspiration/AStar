@@ -86,10 +86,10 @@ void AxisEightAddNode(st_Node *pParent)
 
 bool TileCheck(int Xpos, int Ypos)
 {
-	if (Xpos < 0 || Xpos >= TILE_WIDTH * MAP_HEIGHT)
+	if (Xpos < 0 || Xpos >=  MAP_HEIGHT)
 		return false;
 
-	if (Ypos < 0 || Ypos >= TILE_HEIGHT * MAP_WIDTH)
+	if (Ypos < 0 || Ypos >=  MAP_WIDTH)
 		return false;
 
 
@@ -132,10 +132,10 @@ void MakeNode(st_Node *pParent, int X, int Y)
 	list<st_Node *>::iterator iter;
 	for (iter = OpenList.begin(); iter != OpenList.end(); ++iter)
 	{
-		if ((*iter)->m_iXpos  > X || (*iter)->m_iXpos  < X)
+		if ((*iter)->m_iXpos > X || (*iter)->m_iXpos < X)
 			continue;
 
-		if ((*iter)->m_iYpos  > Y || (*iter)->m_iYpos < Y)
+		if ((*iter)->m_iYpos > Y || (*iter)->m_iYpos < Y)
 			continue;
 
 		if (X == (*iter)->m_iXpos && Y == (*iter)->m_iYpos)
